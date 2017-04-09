@@ -1,0 +1,286 @@
+/** COLOR PALETTE:
+  *
+  * Background: #F5F5F5 (GREY 100)
+  * Primary Text: black
+  *
+  * Primary color: #3F51B5 (INDIGO)
+  * Primary color_text : white
+  * Accent color: #CDDC39 (LIME)
+  * Accent color_text: black
+  */
+
+/* GLOBAL */
+
+* {
+    font-family: Roboto, 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #F5F5F5;
+}
+
+button, strong {
+    text-transform: uppercase;
+}
+
+/* LAYOUT */
+
+#channels {
+    position: absolute;
+    height: 100%;
+    width: 40%;
+
+    background-color: #3F51B5; /* temporary background color to see the effect, is completely hidden now */
+}
+
+#chat {
+    position: absolute;
+    height: 100%;
+    width: 60%;
+    left: 40%;
+}
+
+#messages {
+    position: absolute;
+    width: 100%;
+    top: 64px;
+    bottom: 72px;
+    overflow-y: auto;
+}
+
+/* APP BAR */
+
+h1 {
+    background-color: #3F51B5;
+    color: white;
+
+    /* app-bar: general settings for both bars */
+    height: 64px;
+    font-size: 20px;
+    font-weight: 500;
+
+    /* app-bar spacing */
+    box-sizing: border-box;
+    padding: 24px 16px 20px 16px;
+
+    /* MOOCUS image alignment */
+    position: relative; /* we need this, so that the image's absolute position is relative to the app bar */
+}
+
+h1#left-app-bar {
+    padding-left: 72px;
+}
+
+h1#left-app-bar img {
+    position: absolute;
+    left: 16px;
+    bottom: 0;
+}
+
+h1 a {
+    color: white;
+}
+
+h1 i {
+    /* #7 #icns #str  */
+    position:absolute;
+    right: 16px;
+    /* #7 #icns #small adjust icon size */
+    font-size:24px;
+}
+
+/* CHANNELS LIST */
+
+ul {
+    list-style-type: none;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    top: 64px; /* the app bar's height */
+    bottom: 72px; /* the tab bar's height */
+    overflow-y: auto; /* this adds scroll bars on demand */
+}
+
+li {
+    box-sizing: border-box;
+    height: 48px;
+    padding: 16px;
+    font-size: 16px;
+    border-bottom: 1px solid #F5F5F5;
+    position: relative;
+}
+
+li .channel-meta {
+    /* right-align channel-meta icons */
+    position: absolute;
+    right: 16px;
+    top: 12px;
+
+    /* #8 #channel #centered blue boxes */
+    display:flex;
+}
+
+li .channel-meta span {
+    /* #8 #channel #boxes for the additional metadata */
+    /* color */
+    background-color: #3F51B5;
+    color: white;
+    /* appearance */
+    margin:2px;
+    padding:2px;
+    border-radius:2px;
+    font-size:10px;
+
+    /* #8 #channel #centered blue boxes' text content */
+    align-self:center;
+}
+
+li i.fa {
+    /* #7 #icns #small in channels view */
+    font-size: 24px;
+}
+
+
+li.selected {
+    color: #3F51B5;
+    border-left: 4px solid #3F51B5;
+}
+
+/* TAB BAR */
+
+#tab-bar, #chat-bar {
+    background-color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+}
+
+#tab-bar button, #chat-bar button {
+    background-color: white;
+    border: none;
+    font-size: 13px;
+    width: 33%;
+    height: 72px;
+    padding: 16px;
+
+    /* flexify the buttons by growing them equally */
+    flex-grow: 1;
+}
+
+#tab-bar button.selected {
+    color: #3F51B5;
+    border-bottom: 4px solid #3F51B5;
+}
+
+#tab-bar button i {
+    /* #7 #icns #tab select i instead of img and adjust font size */
+    display: block;
+    font-size: 24px;
+    margin: 0 auto 4px auto;
+}
+
+/* CHAT BAR */
+
+#chat-bar button {
+    /* override button styles. We set the chat bar to appear like a tab-bar above. This overrides the tab bar's button scaling */
+    width: auto;
+    flex-grow: 0;
+
+    /* #7 #icns #smile adjust fa size */
+    font-size: 24px;
+}
+
+#emojis {
+    /* emoji menu */
+    /* colors and borders */
+    background-color:white;
+    border: 1px solid black;
+
+    /* size & alignment */
+    position: absolute;
+    box-sizing: border-box;
+    height: 300px;
+    width: 300px;
+    left: 16px;
+    top: -284px;
+    padding: 16px;
+
+    /* font and left-align text */
+    text-align: left;
+    font-size: 28px;
+
+    /* scroll when it has too many emojis */
+    overflow-y: auto;
+
+    /* hide the #smile menu */
+    display: none;
+}
+
+/* #8 #input #styles for font, border, and alignment */
+#chat-bar input {
+    /* styles */
+    font-size: 16px;
+    border: none;
+    /* alignment */
+    flex-grow: 1;
+}
+
+/* MESSAGES */
+
+.message {
+    width: 80%;
+    margin-bottom: 8px;
+    margin-left: 2.5%;
+    position: relative;
+}
+
+.message h3 {
+    /* Message-meta medium-sized text, non-italic */
+    font-size: medium;
+
+    /* messages distribute metadata content evenly with flexbox */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.message h3 a {
+    /* What3words link is primary test */
+    color: black;
+
+    width: 30%;
+}
+
+.message h3 em {
+    /* Larger text, non-italic*/
+    font-size: larger;
+    font-style: normal;
+
+    width: 20%;
+    text-align: right;
+}
+
+.message p {
+    background-color: white;
+    padding: 16px;
+}
+
+.message button {
+    /* +5 min. button*/
+    background-color: #CDDC39;
+    color: black;
+    text-transform: uppercase;
+
+    /* right/bottom alignment of button */
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+}
+
+.message.own {
+    margin-left: 17.5%;
+}

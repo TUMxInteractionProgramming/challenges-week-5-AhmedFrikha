@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>chatter|app</title>
+
+    <!-- embed the roboto font. This needs to go above your css -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+    <!-- embed external css -->
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <!-- embed jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- #7 #icns #fa embed font awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- #7 #chlob #lnk embed external JavaScript file for channel objects -->
+    <script src="js/channels.js"></script>
+
+    <!-- embed external JavaScript file for app interaction -->
+    <script src="js/script.js"></script>
+
+</head>
+
+<!-- #8 #channel #onload all channels when the body has loaded -->
+<body onload="listChannels()">
+
+<!-- channel area -->
+<div id="channels">
+
+    <!-- APP BAR for APP TITLE -->
+    <h1 id="left-app-bar">
+        <img src="http://ip.lfe.mw.tum.de/sections/moocus.png" alt="Moocus, the chatty duck!" style="height: 56px;">
+        chatter|app
+    </h1>
+
+    <!-- CHANNELS -->
+    <ul>
+        <!-- #8 #remove all #channels
+        <!-- This document will trigger many warning and errors when using the W3C Validator due to comments in comments, which is not allowed. We let them stay so you can check out the solution for Challenge 7.
+        <!-- #7 #chlob #clk calls our switchChannel with the corresponding OBJECT as an argument --
+        <li onclick="switchChannel(yummy)">
+            #Yummy
+            <span class="channel-meta">
+                <!-- #7 #icns #chl replace images with icons--
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </li>
+        <!-- #7 #chlob #clk calls our switchChannel with the corresponding OBJECT as an argument --
+        <li class="selected" onclick="switchChannel(sevencontinents)">
+            #SevenContinents
+            <span class="channel-meta">
+                <!-- #7 #icns #chl replace images with icons--
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </li>
+        <!-- #7 #chlob #clk calls our switchChannel with the corresponding OBJECT as an argument --
+        <li onclick="switchChannel(killerapp)">
+            #KillerApp
+            <span class="channel-meta">
+                <!-- #7 #icns #chl replace images with icons--
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </li>
+        <!-- #7 #chlob #clk calls our switchChannel with the corresponding OBJECT as an argument --
+        <li onclick="switchChannel(firstpersononmars)">
+            #FirstPersonOnMars
+            <span class="channel-meta">
+                <!-- #7 #icns #chl replace images with icons--
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </li>
+        <!-- #7 #chlob #clk calls our switchChannel with the corresponding OBJECT as an argument --
+        <li onclick="switchChannel(octoberfest)">
+            #Octoberfest
+            <span class="channel-meta">
+                <!-- #7 #icns #chl replace images with icons--
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </li>
+        -->
+    </ul>
+
+    <!-- TAB BAR -->
+    <div id="tab-bar">
+        <button class="selected" id="tab-new" onclick="selectTab('#tab-new')">
+            <!-- #7 #icns #tab replacing icons -->
+            <i class="fa fa-lightbulb-o"></i>
+            New
+        </button>
+        <button id="tab-trending" onclick="selectTab('#tab-trending')">
+            <!-- #7 #icns #tab replacing icons -->
+            <i class="fa fa-fire"></i>
+            Trending
+        </button>
+        <button id="tab-favorites" onclick="selectTab('#tab-favorites')">
+            <!-- #7 #icns #tab replacing icons -->
+            <i class="fa fa-star"></i>
+            Favorites
+        </button>
+    </div>
+</div>
+
+<div id="chat">
+
+    <!-- APP BAR for CHANNEL TITLE -->
+    <h1>
+        <span id="channel-name">#SevenContinents</span>
+        <small id="channel-location">by <strong>cheeses.yard.applies</strong></small>
+        <!-- #7 #icns #str: star is now font-awesome -->
+        <i class="fa fa-star" onclick="star()"></i>
+    </h1>
+
+    <div id="messages">
+
+        <div class="message own">
+            <h3><a href="http://w3w.co/cheeses.yard.applies" target="_blank"><strong>cheeses.yard.applies</strong></a>
+                Wed, June 20th, 13:37 <em>15 min. left</em></h3>
+            <p>What's the place you folks call home?</p>
+            <button>+5 min.</button>
+        </div>
+
+        <div class="message">
+            <h3><a href="http://w3w.co/truck.cotton.zone" target="_blank"><strong>truck.cotton.zone</strong></a>
+                Wed, June 20th, 13:39 <em>4 min. left</em></h3>
+            <p>BRISBANE! Hang loose!</p>
+            <button>+5 min.</button>
+        </div>
+
+        <div class="message">
+            <h3><a href="http://w3w.co/thus.best.dishes" target="_blank"><strong>thus.best.dishes</strong></a>
+                Wed, June 20th, 14:02 <em>12 min. left</em></h3>
+            <p>The big apple.</p>
+            <button>+5 min.</button>
+        </div>
+
+        <div class="message">
+            <h3><a href="http://w3w.co/driveway.helper.magazine"
+                   target="_blank"><strong>driveway.helper.magazine</strong></a>
+                Wed, June 20th, 14:02 <em>7 min. left</em></h3>
+            <p>Eu sou um Cariocas.</p>
+            <button>+5 min.</button>
+        </div>
+
+        <div class="message">
+            <h3><a href="http://w3w.co/escapes.pitch.saucepan"
+                   target="_blank"><strong>escapes.pitch.saucepan</strong></a>
+                Wed, June 20th, 14:07 <em>14 min. left</em></h3>
+            <p>Greetings from the western cape!</p>
+            <button>+5 min.</button>
+        </div>
+
+        <div class="message">
+            <h3><a href="http://w3w.co/meanings.identity.pays"
+                   target="_blank"><strong>meanings.identity.pays</strong></a>
+                Wed, June 20th, 04:08 <em>15 min. left</em></h3>
+            <p>北京</p>
+            <button>+5 min.</button>
+        </div>
+
+    </div>
+
+    <!-- ChAT BAR -->
+    <div id="chat-bar">
+        <button id="emojis-button" onclick="toggleEmojis()">
+            <!-- #7 #icns #smile replacing icons -->
+            <i class="fa fa-smile-o"></i>
+        </button>
+        <div id="emojis">&#x1F601; &#x1F602; &#x1F603; &#x1F604; &#x1F605; &#x1F606; &#x1F607;</div>
+        <!-- #8 create a new #input #element which accepts text and has a #prefill as well as a character #imit.
+               For #real, it also gets an id -->
+        <input type="text" placeholder="Message..." maxlength="140" id="message">
+        <!-- #8 #message #send requires a button -->
+        <button onclick="sendMessage()"><i class="fa fa-arrow-right"></i></button>
+    </div>
+</div>
+
+</body>
+</html>
