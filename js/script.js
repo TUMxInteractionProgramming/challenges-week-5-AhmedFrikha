@@ -35,10 +35,10 @@ function switchChannel(channelObject) {
         + '</strong></a>';
 
     /* #7 #clob #trn remove either class */
-    $('#chat h1 i').removeClass('fa-star fa-star-o');
+    $('#channel-star i').removeClass('fa-star fa-star-o');
 
     /* #7 #clob #trn set class according to object property */
-    $('#chat h1 i').addClass(channelObject.starred ? 'fa-star' : 'fa-star-o');
+    $('#channel-star i').addClass(channelObject.starred ? 'fa-star' : 'fa-star-o');
 
 
     /* highlight the selected #channel.
@@ -54,8 +54,8 @@ function switchChannel(channelObject) {
 function star() {
     // Toggling star
     // #7 #icns #str: replace image with icon
-    $('#chat h1 i').toggleClass('fa-star');
-    $('#chat h1 i').toggleClass('fa-star-o');
+    $('#channel-star i').toggleClass('fa-star');
+    $('#channel-star i').toggleClass('fa-star-o');
 
     // #7 #star #tgl: toggle star also in data model
     currentChannel.starred = !currentChannel.starred;
@@ -73,6 +73,7 @@ function selectTab(tabId) {
     $('#tab-bar button').removeClass('selected');
     console.log('Changing to tab', tabId);
     $(tabId).addClass('selected');
+    
 }
 
 /**
@@ -110,14 +111,18 @@ function sendMessage() {
     console.log("New message:", message);
 
     // #8 nicer #message #append with jQuery:
+    if (message.text.length){ 
     $('#messages').append(createMessageElement(message));
 
+        currentChannel.messages.push(message);
+        currentChannel.messageCount++;
     // #8 #messages will #scroll to a certain point if we apply a certain height, in this case the overall scrollHeight of the messages-div that increases with every message;
     // it would also #scroll to the bottom when using a very high number (e.g. 1000000000);
     $('#messages').scrollTop($('#messages').prop('scrollHeight'));
 
     // #8 #clear the #message input
     $('#message').val('');
+    }
 }
 
 /**
@@ -140,21 +145,26 @@ function createMessageElement(messageObject) {
         messageObject.createdOn.toLocaleString() +
         '<em>' + expiresIn+ ' min. left</em></h3>' +
         '<p>' + messageObject.text + '</p>' +
-        '<button>+5 min.</button>' +
+        '<button class="accent">+5 min.</button>' +
         '</div>';
 }
 
 
-function listChannels() {
+function listChannels( criterion) {
     // #8 #channel #onload
     //$('#channels ul').append("<li>New Channel</li>")
 
     // #8 #channels make five #new channels
-    $('#channels ul').append(createChannelElement(yummy));
-    $('#channels ul').append(createChannelElement(sevencontinents));
-    $('#channels ul').append(createChannelElement(killerapp));
-    $('#channels ul').append(createChannelElement(firstpersononmars));
-    $('#channels ul').append(createChannelElement(octoberfest));
+    channels.sort(criterion);
+    $('#channels ul').empty();
+    for( var i=0; i< channels.length ; i++){
+        $('#channels ul').append(createChannelElement(channels[i]));
+    }
+//    $('#channels ul').append(createChannelElement(yummy));
+//    $('#channels ul').append(createChannelElement(sevencontinents));
+//    $('#channels ul').append(createChannelElement(killerapp));
+//    $('#channels ul').append(createChannelElement(firstpersononmars));
+//    $('#channels ul').append(createChannelElement(octoberfest));
 }
 
 /**
@@ -192,4 +202,142 @@ function createChannelElement(channelObject) {
 
     // return the complete channel
     return channel;
+}
+
+function compareNew(channelA, channelB){
+    return channelB.createdOn - channelA.createdOn;
+}
+
+function compareTrending(channelA, channelB){
+    return channelB.messageCount - channelA.messageCount;
+}
+
+function compareFavorites(channelA, channelB) {
+    return channelA.starred ? -1 : 1 ;
+}
+
+function loadEmojis(){
+    var emojis = require('emojis-list');
+//    console.log(emojis[0])
+    for (emoji in emojis) {
+        $('#emojis').append(emojis[emoji] + " ");
+    }
+}
+function createChannel() {
+    // #10 #new: #name of the channel
+    var name = $('#new-channel').val();
+    //initial message
+    var text = $('#message').val();
+    // Check whether channel #name input field is #valid.
+    if (name.length == 0 || name.search(" ") > -1 || name.search("#") == -1) {
+        alert('Enter valid channel name! ("#" at the beginning, no spaces)');
+        return;
+        // Check whether message input field is #valid.
+    } else if (!text) {
+        alert('Enter an initial message!');
+        return;
+    } else { // #10 #new #store
+        // Create new channel object by calling the constructor.
+        var channel = new Channel(name);
+        // Set new channel as currentChannel.
+        currentChannel = channel;
+        // Push new channel object to 'channels' array.
+        channels.push(channel);
+        // Create DOM element of new channel object and append it to channels list.
+        $('#channels ul').append(createChannelElement(channel));
+        // Log channel creation.
+        console.log('New channel: ' + channel);
+        // Send initial message.
+        sendMessage();
+        // Empty channel name input field.
+        $('#new-channel').val('');
+        // Return to normal view.
+        abortCreationMode();
+        // #show #new channel's data
+        document.getElementById('channel-name').innerHTML = channel.name;
+        document.getElementById('channel-location').innerHTML = 'by <a href="http://w3w.co/'
+            + channel.createdBy
+            + '" target="_blank"><strong>'
+            + channel.createdBy
+            + '</strong></a>';
+    }
+}
+
+/**
+ * This function creates a new jQuery channel <li> element out of a given object
+ * @param channelObject a channel object
+ * @returns {HTMLElement}
+ */
+function createChannelElement(channelObject) {
+    /* this HTML is build in jQuery below:
+     <li>
+     {{ name }}
+        <span class="channel-meta">
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-chevron-right"></i>
+        </span>
+     </li>
+     */
+
+    // create a channel
+    var channel = $('<li>').text(channelObject.name);
+
+    // create and append channel meta
+    var meta = $('<span>').addClass('channel-meta').appendTo(channel);
+
+    // The star including star functionality.
+    // Since we don't need any further children, we don't need any variables (references)
+    $('<i>').addClass('fa').addClass(channelObject.starred ? 'fa-star' : 'fa-star-o').appendTo(meta);
+
+    // boxes for some additional metadata
+    $('<span>').text(channelObject.expiresIn + ' min').appendTo(meta);
+    $('<span>').text(channelObject.messageCount + ' new').appendTo(meta);
+
+    // The chevron
+    $('<i>').addClass('fa').addClass('fa-chevron-right').appendTo(meta);
+
+    // return the complete channel
+    return channel;
+}
+
+/**
+ * #10 #new: This function enables the "create new channel"-mode
+ */
+
+function Channel(name) {
+    // copy my location
+    this.createdBy = currentLocation.what3words;
+    // set dates
+    this.createdOn = new Date(); //now
+    this.expiresIn = 60; // this is just temporary
+    // set name
+    this.name = name;
+    // set favourite
+    this.starred = false;
+    // set messages array and message count
+    this.messages = [];
+    this.messageCount = 0;
+}
+function initCreationMode() {
+    //#10 #new: swapping the right app-bar
+    $('#app-bar-messages').hide();
+    $('#app-bar-create').addClass('show');
+
+    //#10 #new #clear all messages in the container
+    $('#messages').empty();
+
+    //#10 #new: swapping "send" with "create" button
+    $('#button-send').hide();
+    $('#button-create').show();
+}
+
+/**
+ * #10 #new: This function ends the "create new channel"-mode
+ */
+function abortCreationMode() {
+    //#10 #new: #abort restores the previously selected channel
+    $('#app-bar-messages').show();
+    $('#app-bar-create').removeClass('show');
+    $('#button-create').hide();
+    $('#button-send').show();
 }

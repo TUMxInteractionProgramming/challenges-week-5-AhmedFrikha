@@ -33,6 +33,7 @@ button, strong {
     width: 40%;
 
     background-color: #3F51B5; /* temporary background color to see the effect, is completely hidden now */
+    z-index:2;
 }
 
 #chat {
@@ -41,6 +42,7 @@ button, strong {
     width: 60%;
     left: 40%;
 }
+
 
 #messages {
     position: absolute;
@@ -67,6 +69,7 @@ h1 {
 
     /* MOOCUS image alignment */
     position: relative; /* we need this, so that the image's absolute position is relative to the app bar */
+    z-index:1;
 }
 
 h1#left-app-bar {
@@ -83,12 +86,15 @@ h1 a {
     color: white;
 }
 
-h1 i {
+h1 #channel-star {
     /* #7 #icns #str  */
     position:absolute;
     right: 16px;
     /* #7 #icns #small adjust icon size */
     font-size:24px;
+    top: 6px;
+    right:0;
+    
 }
 
 /* CHANNELS LIST */
@@ -157,16 +163,17 @@ li.selected {
     bottom: 0;
     width: 100%;
     display: flex;
+    height: 72px
 }
 
-#tab-bar button, #chat-bar button {
+#tab-bar button {
     background-color: white;
     border: none;
     font-size: 13px;
     width: 33%;
     height: 72px;
-    padding: 16px;
-
+/*    padding: 16px;*/
+margin: 0;
     /* flexify the buttons by growing them equally */
     flex-grow: 1;
 }
@@ -185,6 +192,11 @@ li.selected {
 
 /* CHAT BAR */
 
+#chat-bar {
+    /* #9 #flex the #chat-bar */
+    justify-content:space-between;
+    align-items:center;
+}
 #chat-bar button {
     /* override button styles. We set the chat bar to appear like a tab-bar above. This overrides the tab bar's button scaling */
     width: auto;
@@ -198,7 +210,7 @@ li.selected {
     /* emoji menu */
     /* colors and borders */
     background-color:white;
-    border: 1px solid black;
+/*    border: 1px solid black;*/
 
     /* size & alignment */
     position: absolute;
@@ -234,7 +246,7 @@ li.selected {
 .message {
     width: 80%;
     margin-bottom: 8px;
-    margin-left: 2.5%;
+    margin-left: 20px;
     position: relative;
 }
 
@@ -267,6 +279,22 @@ li.selected {
 .message p {
     background-color: white;
     padding: 16px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    position: relative;
+}
+
+.message p:before {
+/*    width:20px;*/
+/*    height: 20px;*/
+/*    background-color: red;*/
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20px;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+        filter: drop-shadow(-2px 1px 1px rgba(0, 0, 0, 0.14));
+
 }
 
 .message button {
@@ -276,11 +304,131 @@ li.selected {
     text-transform: uppercase;
 
     /* right/bottom alignment of button */
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
+  position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
 .message.own {
-    margin-left: 17.5%;
+    margin-left: calc(20% - 20px);
 }
+.message.own p:before {
+    left: 100%;
+    border-bottom: 20px solid transparent;
+/*    border-top: 20px solid red;*/
+/*    border-right: 20px solid green;*/
+    border-right: none;
+    border-left: 20px solid white;
+
+    /* #9 #msgs #ash: this is a somewhat different, but for the right triangle ok-looking shadow */
+    filter: drop-shadow(2px 0px 1px rgba(0, 0, 0, 0.14));
+}
+
+button{
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: 8px;
+    background-color: white;
+    border-color: none;
+    color: black;
+    text-transform: uppercase;
+    height: 36px;
+    min-width: 64px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+button.primary{
+    background-color: #3F51B5;
+    color: white;
+    }
+button.accent{
+    background-color: #CDDC39;
+    color: black;
+    }
+button:hover, button:active {
+    background-color: #D9D9D9;
+}
+button.primary:hover, button.primary:active {
+    background-color: #192B8F
+}
+button.accent:hover, button.accent:active {
+    background-color: #A7B613;
+}
+
+button:focus, input:focus {
+    /* #9 #btns # fcs: remove the blue focus outline */
+    outline: none;
+}
+
+
+.shadow--2dp {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.shadow--3dp {
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+}
+
+.shadow--4dp {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.shadow--6dp {
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+}
+
+.shadow--8dp {
+    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+
+.shadow--16dp {
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.shadow--24dp {
+    box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2);
+}
+
+#add-channel{
+    
+    border-radius: 50% ;
+/*    background-color: lime;*/
+    position: absolute;
+    bottom: calc(72px + 16px);
+    height: 56px;
+    min-width: 56px;
+    font-size: 24px;
+    right: 16px;
+}
+
+#app-bar-create {
+    /* #10 #new #styled and placed */
+    align-items: center;
+    padding-right: 0;
+    /* by default this element is hidden*/
+    display: none;
+}
+
+#app-bar-create.show {
+    /* #10 #new #styled and placed */
+    /* to show the app-bar, we need display:flex, not display:none */
+    display: flex;
+}
+
+#app-bar-create input {
+    /* #10 #new #styled and placed */
+    /* styles */
+    font-size: 20px;
+    border: none;
+    border-radius: 2px;
+    margin-top: 3px;
+    padding: 4px;
+    /* alignment */
+    display: block;
+    flex-grow: 1;
+}
+#button-create {
+    /* #10 #new #styled and placed; initially invisible */
+    display: none;
+}
+

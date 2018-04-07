@@ -21,17 +21,19 @@
 
     <!-- embed external JavaScript file for app interaction -->
     <script src="js/script.js"></script>
+    <script src="js/emojis-list.js" type="text/javascript" charset="utf-8"></script>
+  
 
 </head>
 
 <!-- #8 #channel #onload all channels when the body has loaded -->
-<body onload="listChannels()">
+<body onload="listChannels(compareNew); loadEmojis()">
 
 <!-- channel area -->
-<div id="channels">
+<div id="channels" class="shadow--16dp">
 
     <!-- APP BAR for APP TITLE -->
-    <h1 id="left-app-bar">
+    <h1 id="left-app-bar"  class="shadow--4dp">
         <img src="http://ip.lfe.mw.tum.de/sections/moocus.png" alt="Moocus, the chatty duck!" style="height: 56px;">
         chatter|app
     </h1>
@@ -88,19 +90,20 @@
         -->
     </ul>
 
+    <button id="add-channel" class="accent shadow--6dp" onclick="initCreationMode();"><i class="fa fa-plus"></i></button>
     <!-- TAB BAR -->
-    <div id="tab-bar">
-        <button class="selected" id="tab-new" onclick="selectTab('#tab-new')">
+    <div id="tab-bar" class="shadow--4dp">
+        <button class="selected" id="tab-new" onclick="selectTab('#tab-new') ; listChannels(compareNew)">
             <!-- #7 #icns #tab replacing icons -->
             <i class="fa fa-lightbulb-o"></i>
             New
         </button>
-        <button id="tab-trending" onclick="selectTab('#tab-trending')">
+        <button id="tab-trending" onclick="selectTab('#tab-trending') ; listChannels(compareTrending)">
             <!-- #7 #icns #tab replacing icons -->
             <i class="fa fa-fire"></i>
             Trending
         </button>
-        <button id="tab-favorites" onclick="selectTab('#tab-favorites')">
+        <button id="tab-favorites" onclick="selectTab('#tab-favorites'); listChannels(compareFavorites)">
             <!-- #7 #icns #tab replacing icons -->
             <i class="fa fa-star"></i>
             Favorites
@@ -111,34 +114,42 @@
 <div id="chat">
 
     <!-- APP BAR for CHANNEL TITLE -->
-    <h1>
+    <h1  id="app-bar-messages" class="shadow--4dp">
         <span id="channel-name">#SevenContinents</span>
         <small id="channel-location">by <strong>cheeses.yard.applies</strong></small>
         <!-- #7 #icns #str: star is now font-awesome -->
-        <i class="fa fa-star" onclick="star()"></i>
+        <button id="channel-star" class="primary" onclick="star()"><i class="fa fa-star"></i></button>
+        
     </h1>
 
+    <h1 id="app-bar-create" class="shadow--4dp">
+        <!-- #10 #new input field for channel #name -->
+        <input type="text" id="new-channel" placeholder="Enter a #ChannelName"/>
+        <button class="primary" onclick="abortCreationMode()"><i class="fa fa-close"></i> Abort</button>
+    </h1>
+    
     <div id="messages">
 
+<!--
         <div class="message own">
             <h3><a href="http://w3w.co/cheeses.yard.applies" target="_blank"><strong>cheeses.yard.applies</strong></a>
                 Wed, June 20th, 13:37 <em>15 min. left</em></h3>
             <p>What's the place you folks call home?</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
 
         <div class="message">
             <h3><a href="http://w3w.co/truck.cotton.zone" target="_blank"><strong>truck.cotton.zone</strong></a>
                 Wed, June 20th, 13:39 <em>4 min. left</em></h3>
             <p>BRISBANE! Hang loose!</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
 
         <div class="message">
             <h3><a href="http://w3w.co/thus.best.dishes" target="_blank"><strong>thus.best.dishes</strong></a>
                 Wed, June 20th, 14:02 <em>12 min. left</em></h3>
             <p>The big apple.</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
 
         <div class="message">
@@ -146,7 +157,7 @@
                    target="_blank"><strong>driveway.helper.magazine</strong></a>
                 Wed, June 20th, 14:02 <em>7 min. left</em></h3>
             <p>Eu sou um Cariocas.</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
 
         <div class="message">
@@ -154,7 +165,7 @@
                    target="_blank"><strong>escapes.pitch.saucepan</strong></a>
                 Wed, June 20th, 14:07 <em>14 min. left</em></h3>
             <p>Greetings from the western cape!</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
 
         <div class="message">
@@ -162,23 +173,25 @@
                    target="_blank"><strong>meanings.identity.pays</strong></a>
                 Wed, June 20th, 04:08 <em>15 min. left</em></h3>
             <p>北京</p>
-            <button>+5 min.</button>
+            <button class="accent">+5 min.</button>
         </div>
+-->
 
     </div>
 
     <!-- ChAT BAR -->
-    <div id="chat-bar">
-        <button id="emojis-button" onclick="toggleEmojis()">
+    <div id="chat-bar" class="shadow--4dp">
+        <button id="emojis-button" class="primary" onclick="toggleEmojis()">
             <!-- #7 #icns #smile replacing icons -->
             <i class="fa fa-smile-o"></i>
         </button>
-        <div id="emojis">&#x1F601; &#x1F602; &#x1F603; &#x1F604; &#x1F605; &#x1F606; &#x1F607;</div>
+        <div id="emojis" class="shadow--8dp"s>&#x1F601; &#x1F602; &#x1F603; &#x1F604; &#x1F605; &#x1F606; &#x1F607;</div>
         <!-- #8 create a new #input #element which accepts text and has a #prefill as well as a character #imit.
                For #real, it also gets an id -->
         <input type="text" placeholder="Message..." maxlength="140" id="message">
         <!-- #8 #message #send requires a button -->
-        <button onclick="sendMessage()"><i class="fa fa-arrow-right"></i></button>
+        <button  id="button-send" class="accent" onclick="sendMessage()"><i class="fa fa-arrow-right"></i></button>
+         <button id="button-create" class="accent" onclick="createChannel();">CREATE</button>
     </div>
 </div>
 
